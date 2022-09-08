@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    let questions = [
+        {
+            question: "Як називають людину,яка являється користувачем комп'ютера",
+            prize: 500,
+            rightAnswer: 'd',
+            nonBurning: false,
+            answers: {
+                a : 'ламер',
+                b : 'чайник',
+                c : 'хакер',
+                d : 'юзер'
+            }
+        },
+        {
+            question: "Пристрій для виведення звукової інформації",
+            prize: 1000,
+            rightAnswer: 'c',
+            nonBurning: false,
+            answers: {
+                a : 'мікрофон',
+                b : 'монітор',
+                c : 'колонки',
+                d : 'принтер'
+            }
+        },
+        {
+            question: "День народження мережі Internet",
+            prize: 2000,
+            rightAnswer: 'a',
+            nonBurning: true,
+            answers: {
+                a: '17 травня 1991 року',
+                b: '1 січня 1983 року',
+                c: '20 лютого 1969 року',
+                d: '1 травня 1973 року'
+            }
+        },
+        {
+            question: "Пристрій, що відноситься до зовнішньої пам’яті ПК",
+            prize: 5000,
+            rightAnswer: 'b',
+            nonBurning: false,
+            answers: {
+                a: 'динамометр',
+                b: 'вінчестер',
+                c: 'кеш-пам’ять',
+                d: 'оперативна пам’ять 50/50'
+            }
+        },
+        {
+            question: "Яких типів вікон не існує в ОС Windows",
+            prize: 10000,
+            rightAnswer: 'a',
+            nonBurning: false,
+            answers: {
+                a : 'операційні',
+                b : 'інформаційні',
+                c : 'діалогові',
+                d : 'програмні'
+            }
+        },
+        {
+            question: "Перша жінка програміст",
+            prize: 25000,
+            rightAnswer: 'b',
+            nonBurning: false,
+            answers: {
+                a : 'Карен Спак Джонс',
+                b : 'Ада Лавлейс',
+                c : 'Ерна Гувер',
+                d : 'Хеді Ламер'
+            }
+        },
+        {
+            question: "Скільки біт в байті",
+            prize: 100000,
+            rightAnswer: 'b',
+            nonBurning: true,
+            answers: {
+                a : '4 біт',
+                b : '8 біт',
+                c : '16 біт',
+                d : '56біт'
+            }
+        },
+        {
+            question: "Якого типу даних не існує в JavaScript",
+            prize: 250000,
+            rightAnswer: 'c',
+            nonBurning: false,
+            answers: {
+                a : 'Symbol',
+                b : 'String',
+                c : 'Float',
+                d : 'BigInt'
+            }
+        },
+        {
+            question: "Як перевірити тип даних в JavaScript?",
+            prize: 500000,
+            rightAnswer: 'd',
+            nonBurning: false,
+            answers: {
+                a: 'IsNan',
+                b: 'Number',
+                c: 'instance of',
+                d: 'typeof'
+            }
+       },
+        {
+            question: "Що не є операційною системою?",
+            prize: 1000000,
+            rightAnswer: 'a',
+            nonBurning: true,
+            answers: {
+                a: 'Safari',
+                b: 'Apple iOS',
+                c: 'Linux',
+                d: 'Windows'
+            }
+        }
+    ];
+
+    const answerOptions = ['a', 'b', 'c', 'd'];
+
+    displayQuestions();
+
+    function displayQuestions()
+    {
+        let theEndOfGame = false;
+        let count = 0;
+
+        for(let i = 0; i < questions.length; i++) {
+            count++;
+
+            let userPrice = questions[i].prize;
+            const answers = questions[i].answers;
+
+            let optionsString = ``;
+            let userAnswer;
+
+            for (let prop in answers) {
+                optionsString += `\r\n ${prop}. ${answers[prop]} `;
+            }
+
+            do{
+                userAnswer = prompt(`QUESTION FOR ${questions[i].prize}\r\n ${questions[i].question} ${optionsString}`);
+            } while (!validateUserAnswer(userAnswer));
+
+            if (userAnswer === questions[i].rightAnswer) {
+
+                if(count === questions.length) {
+                    alert("Congratulations! You are a millionaire!");
+                    theEndOfGame = true;
+                } else {
+                    let isNextQuestion = confirm("Do you want to continue?");
+
+                    if (isNextQuestion) {
+                        continue;
+                    } else {
+                        displayUserPrice(userPrice);
+                        theEndOfGame = true;
+                    }
+                }
+            } else {
+                alert("Your answer is wrong");
+
+                userPrice = getUnburnedPrice(questions, i);
+
+                displayUserPrice(userPrice);
+                theEndOfGame = true;
+            }
+
+            if(count === questions.length-1) {
+                theEndOfGame = true;
+            }
+
+            if(theEndOfGame) {
+                return;
+            }
+        }
+    }
+
+  function validateUserAnswer(userAnswer)
+  {
+    return answerOptions.some(option => option === userAnswer);
+  }
+
+  function displayUserPrice(userPrice)
+  {
+      alert(`You win ${userPrice}`);
+  }
+
+  function getUnburnedPrice(questions, currentIndex)
+  {
+      let userPrice = 0;
+
+      for(let j = currentIndex; j >= 0; j--) {
+          if(questions[j].nonBurning) {
+              return userPrice = questions[j].prize;
+          }
+      }
+
+      return userPrice;
+  }
+</script>
+</body>
+</html>
